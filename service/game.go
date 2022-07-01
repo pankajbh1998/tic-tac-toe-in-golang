@@ -46,7 +46,8 @@ func (g *GameManager)CheckForWinner(pos int, piece string) bool {
 	size := g.GetVerticalSize()
 	if g.checkForHorizontalWinner(pos, size, piece) ||
 		g.checkForVerticalWinner(pos, size, piece) ||
-		g.checkForDiagonalWinner(pos, size, piece) {
+		g.checkForDiagonalWinner(0, size+1, piece) ||
+		g.checkForDiagonalWinner(size-1, size-1, piece) {
 		return true
 	}
 
@@ -77,13 +78,12 @@ func (g *GameManager)checkForVerticalWinner(pos int, size int, piece string) boo
 }
 
 func (g *GameManager)checkForDiagonalWinner(pos int, size int, piece string) bool {
-	currPos := 0
 	for i:=0; i<size;i++ {
-		currPiece, ok := g.g.GetPiece(currPos)
+		currPiece, ok := g.g.GetPiece(pos)
 		if !ok || currPiece != piece{
 			return false
 		}
-		currPos += size + 1
+		pos += size
 	}
 	return true
 }
